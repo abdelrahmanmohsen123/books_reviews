@@ -12,7 +12,7 @@
 @section('content')
     <div class="container">
         <div class="row my-3">
-            <h3>View Book</h3>
+            <h3>View {{ $book->name }}</h3>
         </div>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -41,7 +41,7 @@
                                 <div class="text-muted"> You Can Download the Book By click Here</div>
                                 <a href="{{ asset('storage/' . $book->book) }}" class="btn btn-success dropdown-toggle"
                                     download="{{ $book->name }}">
-                                    Download The Book {{ $book->name }}
+                                    Download The Book
                                 </a>
                             </div>
                         </div>
@@ -49,19 +49,20 @@
                 </div>
                 <!-- end product img -->
             </div>
-            <div class="col-xl-4">
+            <div class="col-xl-8">
                 <div class="mt-4 mt-xl-3">
                     <h5 class="mt-1 mb-3">{{ $book->name }}</h5>
                     <div class="text-muted">Created By {{ $book->user->name }}</div>
                     <hr class="my-4">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <div>
                                 <h5 class="font-size-14">Description :</h5>
-                                <div class="text-muted">{{ $book->description }}</div>
+                                <p >{{ $book->description }}</p>
                             </div>
                         </div>
-                        <div class="col-12 my-3">
+
+                        <div class="col-12 my-3 " style="display:block">
                             <h5 class="font-size-14">Reviews :</h5>
                             <div class="d-inline-flex mb-3">
                                 <div class="">
@@ -76,53 +77,58 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-xl-4">
-                <div class="container">
-                    <div class="row">
-                        <h5>Add your Rate To Book</h5>
-                    </div>
-                    <div class="row">
-                        {{-- @if ($user_rate == null) --}}
-                        <div class="col mt-4">
-                            @if (session()->has('success'))
-                                <div class="alert alert-success">
-                                    {{ session()->get('success') }}
-                                </div>
-                            @endif
-                            <form class="py-2 px-4" action="{{ route('books.rate.store', $book->id) }}"
-                                style="box-shadow: 0 0 10px 0 #ddd;" method="POST" autocomplete="off">
-                                @csrf
-                                <p class="font-weight-bold ">Review</p>
-                                <div class="form-group row">
-                                    {{-- <input type="hidden" name="book_id" value="{{ $book->id }}"> --}}
-                                    <div class="col">
-                                        <div class="rate">
-                                            @for ($i = 5; $i >= 1; $i--)
-                                                @if ($user_rate == 0)
-                                                    <input type="radio" id="star{{ $i }}" class="rate"
-                                                        name="star_rating" value="{{ $i }}" />
-                                                @else
-                                                    <input type="radio" id="star{{ $i }}" class="rate"
-                                                        name="star_rating" value="{{ $i }}"
-                                                        @if ($user_rate == $i) {{ 'checked' }} @endif />
-                                                @endif
-                                                <label for="star{{ $i }}" title="text">{{ $i }}
-                                                    stars</label>
-                                            @endfor
+                    @if ($book->user_id !=auth()->id())
+                    <hr>
+                    <div class="">
+                        <div class="container">
+                            <div class="row">
+                                <h5>Add your Rate To Book</h5>
+                            </div>
+                            <div class="row">
+                                {{-- @if ($user_rate == null) --}}
+                                <div class="col mt-4">
+                                    @if (session()->has('success'))
+                                        <div class="alert alert-success">
+                                            {{ session()->get('success') }}
                                         </div>
-                                    </div>
+                                    @endif
+                                    <form class="py-2 px-4" action="{{ route('books.rate.store', $book->id) }}"
+                                        style="box-shadow: 0 0 10px 0 #ddd;" method="POST" autocomplete="off">
+                                        @csrf
+                                        <p class="font-weight-bold ">Review</p>
+                                        <div class="form-group row">
+                                            {{-- <input type="hidden" name="book_id" value="{{ $book->id }}"> --}}
+                                            <div class="col">
+                                                <div class="rate">
+                                                    @for ($i = 5; $i >= 1; $i--)
+                                                        @if ($user_rate == 0)
+                                                            <input type="radio" id="star{{ $i }}" class="rate"
+                                                                name="star_rating" value="{{ $i }}" />
+                                                        @else
+                                                            <input type="radio" id="star{{ $i }}" class="rate"
+                                                                name="star_rating" value="{{ $i }}"
+                                                                @if ($user_rate == $i) {{ 'checked' }} @endif />
+                                                        @endif
+                                                        <label for="star{{ $i }}" title="text">{{ $i }}
+                                                            stars</label>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 text-right">
+                                            <button class="btn btn-sm py-2 px-3 btn-info" type="submit">Submit
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="mt-3 text-right">
-                                    <button class="btn btn-sm py-2 px-3 btn-info" type="submit">Submit
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
+                    @endif
+
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

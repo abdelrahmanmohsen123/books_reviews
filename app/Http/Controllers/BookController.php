@@ -14,7 +14,6 @@ class BookController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
     }
     /**
      * Display a listing of the resource.
@@ -24,8 +23,6 @@ class BookController extends Controller
         //
         $books = Book::where('user_id',auth()->id())->paginate(4);
         return view('home',compact('books'));
-
-
     }
 
     /**
@@ -36,7 +33,6 @@ class BookController extends Controller
         //
         return view('books.create');
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -55,22 +51,18 @@ class BookController extends Controller
             abort(404);
         }
     }
-
     /**
      * Display the specified resource.
      */
     public function show(Book $book)
     {
         //
-
-
         $stars=  DB::table('book_reviews')
                 ->select(DB::raw('avg(book_reviews.star_rating) as rating_average'))
                 ->join('users','users.id','=','book_reviews.user_id')
                 ->join('books','books.id','=','book_reviews.book_id')
                 ->where('book_reviews.book_id',$book->id)
                 ->get();
-
         $reviewers =   DB::table('book_reviews')
                 ->select(DB::raw('count(book_reviews.user_id) as user_count'))
                 ->join('users','users.id','=','book_reviews.user_id')
@@ -79,11 +71,10 @@ class BookController extends Controller
                 ->get();
         // dd($reviewers[0]->user_count);
         $user_reviewers =  $reviewers[0]->user_count;
-
         // dd($stars[0]->rating_average);
         $avg_rate_book = $stars[0]->rating_average;
+        // dd($avg_rate_book);
         $avg_rate_book = round($avg_rate_book);
-
         $user_rate_book=  DB::table('book_reviews')
                             ->select('book_reviews.star_rating')
                             ->join('users','users.id','=','book_reviews.user_id')
@@ -97,8 +88,6 @@ class BookController extends Controller
         }else{
             $user_rate=0;
         }
-
-
         return view('books.show',compact('book','avg_rate_book','user_rate','user_reviewers'));
     }
 
@@ -125,12 +114,9 @@ class BookController extends Controller
     {
         //
     }
-
     public function store_rate_book(StoreRateRequest $request,$id ){
         // dd($request->all());
-        $find_rate = BookReview::where('book_id',$id)
-                                 ->where('user_id',auth()->id())->first();
-
+        $find_rate = BookReview::where('book_id',$id)->where('user_id',auth()->id())->first();
         if($find_rate ==null){
             $new_rate = new BookReview();
             $new_rate->user_id = auth()->id();
@@ -143,11 +129,7 @@ class BookController extends Controller
             $find_rate->save();
             return redirect()->back()->with('success','Your Rated Book Updated ');
         }
-
-
     }
-
-
 
     public function uploadBook($book,$folder){
         $bookName = $folder .'/'. time().'.'.$book->extension();

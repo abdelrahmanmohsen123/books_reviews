@@ -21,13 +21,13 @@
             <div class="row mb-3">
                 <label for="example-text-input" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="name" placeholder="Enter Book Name" id="example-text-input">
+                    <input class="form-control" type="text" value="{{old('name')}}" name="name" placeholder="Enter Book Name" id="example-text-input">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="example-text-input" class="col-sm-2 col-form-label" placeholder="Enter Book Description">Description</label>
                 <div class="col-sm-10">
-                    <textarea name="description" id="" cols="5" class="form-control"  rows="3"></textarea>
+                    <textarea name="description" id="" cols="5" class="form-control"  rows="3">{{old('description')}}</textarea>
                 </div>
             </div>
             <div class="row my-3">
@@ -37,7 +37,7 @@
                             <h4 class="card-title">Upload Book Image</h4>
                             <p class="card-title-desc">The file input Jpeg,Png,Jpg</p>
                             <div class="input-group">
-                                <input type="file" class="form-control" name="image" id="customFile">
+                                <input type="file" class="form-control" value="{{old('image')}}" name="image" id="customFile">
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                             <h4 class="card-title">Upload Book Pdf/Docs</h4>
                             <p class="card-title-desc">The file input Pdf Or Docs</p>
                             <div class="input-group">
-                                <input type="file" class="form-control" name="book" id="customFile">
+                                <input type="file" class="form-control" value="{{old('book')}}" name="book" id="customFile">
                             </div>
                         </div>
                     </div>

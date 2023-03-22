@@ -20,10 +20,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::resource('books',BookController::class);
 Route::post('books/{id}/rate',[BookController::class,'store_rate_book'])->name('books.rate.store');
-
 
 // Any page other not found
 Route::any('{all}', function(){
